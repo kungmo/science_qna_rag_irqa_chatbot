@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+.idea/
+.chainlit/
+.venv/
+data/
+faiss_dic/
+faiss_PDF/
+faiss_QNA/
+pdf_temp/
+uploaded_images/
+uploaded_pdfs/
+.python-version
+pyproject.toml
+uv.lock
