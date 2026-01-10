@@ -1,5 +1,10 @@
 # RAG & IRQA 과학 질문-답변 챗봇 템플릿
 
+![Python](https://img.shields.io/badge/Python-3.13%2B-blue?logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-Apache%202.0-green)
+![Chainlit](https://img.shields.io/badge/UI-Chainlit-F75591?logo=chainlit&logoColor=white)
+![RAG](https://img.shields.io/badge/Tech-RAG%20%26%20IRQA-orange)
+
 > **실제 운영 사례 및 관련 학위 논문**
 > * **운영 사례 보기**: [https://acer2.snu.ac.kr](https://acer2.snu.ac.kr) (2020년부터 실제 운영 중)
 > * **관련 학위논문**: [서울대학교 학위논문 링크](https://s-space.snu.ac.kr/handle/10371/222093?mode=full)
