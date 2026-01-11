@@ -48,10 +48,14 @@ Chainlit을 기반으로 하여, 사용자의 질문에 대해 **생성형 AI의
 
 
 ### 2. 설치
+
+* uv와 git가 설치되어 있어야 합니다.
+
 ```bash
-git clone [https://github.com/your-username/science-rag-chatbot.git](https://github.com/your-username/science-rag-chatbot.git)
-cd science-rag-chatbot
-pip install -r requirements.txt
+git clone [https://github.com/kungmo/science_qna_rag_irqa_chatbot.git](https://github.com/kungmo/science_qna_rag_irqa_chatbot.git)
+cd science_qna_rag_irqa_chatbot
+uv init --python 3.13
+uv pip install -r requirements.txt
 ```
 
 ### 3. 환경 변수 설정 (.env)
