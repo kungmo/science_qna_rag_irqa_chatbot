@@ -49,10 +49,10 @@ Chainlit을 기반으로 하여, 사용자의 질문에 대해 **생성형 AI의
 
 ### 2. 설치
 
-* uv와 git가 설치되어 있어야 합니다.
+* git과 uv가 설치되어 있어야 합니다.
 
 ```bash
-git clone [https://github.com/kungmo/science_qna_rag_irqa_chatbot.git](https://github.com/kungmo/science_qna_rag_irqa_chatbot.git)
+git clone https://github.com/kungmo/science_qna_rag_irqa_chatbot.git
 cd science_qna_rag_irqa_chatbot
 uv init --python 3.13
 uv pip install -r requirements.txt
@@ -72,10 +72,12 @@ DB_NAME=여기에_DB_이름_입력
 
 ### 4. 데이터베이스 테이블 생성 (SQL)
 
-MariaDB에 접속하여 아래 SQL을 실행해 로그 테이블을 생성합니다. (필수)
-DB 이름을 chatbot_logs, 테이블 이름을 datalog로 정했다고 가정.
+* DBeaver로 MariaDB데이터베이스에 접근한 후, 아래 SQL을 실행해서 테이블을 생성합니다. (필수)
+DB 이름을 chatbot_logs, 테이블 이름을 datalog로 정했다고 가정합니다.
 
 ```sql
+CREATE DATABASE IF NOT EXISTS `chatbot_logs` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `chatbot_logs`;
 CREATE TABLE `datalog` (
   `primarykey` int(11) NOT NULL AUTO_INCREMENT,
   `input_time` datetime NOT NULL DEFAULT current_timestamp(),
