@@ -72,20 +72,20 @@ MariaDB에 접속하여 아래 SQL을 실행해 로그 테이블을 생성합니
 DB 이름을 chatbot_logs, 테이블 이름을 datalog로 정했다고 가정.
 
 ```sql
-CREATE DATABASE IF NOT EXISTS chatbot_logs;
-USE chatbot_logs;
-
-CREATE TABLE IF NOT EXISTS datalog (
-    id INT AUTO_INCREMENT PRIMARY KEY COMMENT '로그 ID',
-    session_id VARCHAR(255) NOT NULL COMMENT '세션 ID',
-    input_time DATETIME NOT NULL COMMENT '질문 시간',
-    user_input TEXT NOT NULL COMMENT '사용자 질문',
-    model_answer TEXT COMMENT 'AI 답변',
-    model_name VARCHAR(50) COMMENT '사용 모델명',
-    answer_time FLOAT COMMENT '소요 시간',
-    satisfaction INT DEFAULT 0 COMMENT '만족도(0:미응답, 1:불만족, 2:만족)',
-    INDEX idx_session_time (session_id, input_time)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE `datalog` (
+  `primarykey` int(11) NOT NULL AUTO_INCREMENT,
+  `input_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `user_name` varchar(15) NOT NULL,
+  `session_id` varchar(36) NOT NULL,
+  `student_questio` varchar(2048) DEFAULT NULL,
+  `answer` longtext DEFAULT NULL,
+  `accuracy` smallint(5) unsigned DEFAULT NULL,
+  `satisfaction` smallint(5) unsigned DEFAULT NULL,
+  `image_path` varchar(255) DEFAULT NULL,
+  `pdf_path` varchar(255) DEFAULT NULL,
+  `selected_similar` float DEFAULT NULL,
+  PRIMARY KEY (`primarykey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ```
 
 ### 5. 벡터 DB 구축 (나만의 데이터 넣기)
