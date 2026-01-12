@@ -314,17 +314,34 @@ def create_dynamic_system_prompt(
         uploaded_pdf_docs: Optional[List[Document]] = None
 ) -> SystemMessage:
     """
-    사용자 이름과 PDF 여부에 따라 동적으로 시스템 프롬프트 생성
+    사용자 이름과 현재 시각을 XML 구조의 컨텍스트로 포함하여 시스템 프롬프트 생성
     """
 
-    if not user_name or user_name == "미등록":
-        name_context = ""
-    else:
-        name_context = f"'{user_name}'님의 "
+    # 1. 현재 날짜 및 시각 처리 (한국 시간)
+    kst = pytz.timezone('Asia/Seoul')
+    now = datetime.now(kst)
+    weekday_kor = ["월", "화", "수", "목", "금", "토", "일"][now.weekday()]
+    current_time_str = now.strftime(f"%Y년 %m월 %d일 {weekday_kor}요일 %H시 %M분")
+
+    # 2. XML 컨텍스트 구성 (들여쓰기는 가독성을 위함)
+    # 사용자 이름이 있을 때만 태그를 생성하거나, '미등록'이라도 태그를 유지할지 결정합니다.
+    # 여기서는 이름이 있을 때만 태그를 넣어 명확성을 높였습니다.
+    user_tag = ""
+    if user_name and user_name != "미등록":
+        user_tag = f"    <user_name>{user_name}</user_name>\n"
+
+    # 상단에 위치할 메타 정보 블록 생성
+    metadata_xml = f"""<metadata>
+    <current_time>{current_time_str}</current_time>
+{user_tag}</metadata>"""
+
+    # 3. 공통 프롬프트 내용 정의
+    # 기존 코드에서 {name_context} 부분이 사라지고, 대신 상단의 <context>를 참조하게 됩니다.
 
     # PDF가 있는 경우
     if use_pdf_only and uploaded_pdf_docs:
-        return SystemMessage(content=f"""<task>{name_context}질문에 대해 200단어 이내로 정확하고 명확한 답변을 제공</task>
+        return SystemMessage(content=f"""{metadata_xml}
+<task>사용자의 질문에 대해 200단어 이내로 정확하고 명확한 답변을 제공</task>
 <format_instructions>
     1. Markdown 형식으로 출력
     2. 수식 작성 시 LaTeX 표기법을 엄격히 준수
@@ -344,9 +361,10 @@ def create_dynamic_system_prompt(
     7. 고등학교 1학년 학생이 이해할 수 있는 적절한 용어 사용
 </output_instructions>""")
 
-    # PDF가 없는 경우 (일반 과학 질문)
+    # PDF가 없는 경우
     else:
-        return SystemMessage(content=f"""<task>{name_context}과학 관련 질문에 대한 200단어 이내로 정확하고 명확한 답변 제공</task>
+        return SystemMessage(content=f"""{metadata_xml}
+<task>과학 관련 질문에 대해 200단어 이내로 정확하고 명확한 답변 제공</task>
 <format_instructions>
     1. Markdown 형식으로 출력
     2. 수식 작성 시 LaTeX 표기법을 엄격히 준수
