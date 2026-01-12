@@ -320,7 +320,7 @@ def create_dynamic_system_prompt(
 
     # 1. 현재 날짜 및 시각 처리 (한국 시간)
     kst = pytz.timezone('Asia/Seoul')
-    now = datetime.now(kst)
+    now = datetime.datetime.now(kst)
     weekday_kor = ["월", "화", "수", "목", "금", "토", "일"][now.weekday()]
     current_time_str = now.strftime(f"%Y년 %m월 %d일 {weekday_kor}요일 %H시 %M분")
 
