@@ -47,8 +47,8 @@ os.makedirs(PDF_TEMP_DIR, exist_ok=True)
 # 여기서 LLM을 선택할 수 있습니다. 모두 바꾸기로 llm_gemini와 llm_local_server를 전환하세요.
 llm_gemini = ChatGoogleGenerativeAI(model="gemini-3-flash-preview", temperature=1.0, thinking_level="high")
 llm_local_server = ChatOllama(model="exaone3.5:7.8b-instruct-q8_0", temperature=0)
-# ollama를 쓰려면 이 코드에 있는 llm_gemini를 모두 llm_local_server로 일괄 변경 필요함.
-
+# ollama를 쓰려면 이 코드에 있는 llm_gemini 변수명를 llm_local_server로 모두 변경해야 함.
+# 오픈소스 LLM 사용 시 반드시 Instruction Tuned 모델을 사용해야 함. 예) gemma3:12b-it-qat
 
 def format_qna_docs(docs: List[Document]) -> List[str]:
     """QNA 문서를 포매팅"""
