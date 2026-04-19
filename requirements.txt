@@ -7,7 +7,7 @@ langchain-ollama
 kiwipiepy
 faiss-cpu
 pymysql
-pandas
+pandas==2.3.3
 pypdf
 pillow
 pillow-heif
@@ -19,4 +19,3 @@ torch
 tiktoken
 sentence-transformers
 xlrd
-numpy==1.26.4
