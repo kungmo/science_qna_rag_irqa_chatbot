@@ -49,12 +49,27 @@ Chainlit을 기반으로 하여, 사용자의 질문에 대해 **생성형 AI의
 
 ### 2. 설치
 
-* git과 uv가 설치되어 있어야 합니다.
+* git과 uv가 설치되어 있어야 합니다. Git에서 템플릿을 다운로드하고 가상환경까지 만듭니다.
 
 ```bash
 git clone https://github.com/kungmo/science_qna_rag_irqa_chatbot.git
 cd science_qna_rag_irqa_chatbot
 uv init --python 3.13
+uv venv
+```
+
+* 이제 가상환경에 진입합니다.
+윈도우라면:
+```
+./.venv/Scripts/activate
+```
+리눅스나 MacOS라면
+```
+source ./.venv/bin/activate
+```
+
+* 이제 챗봇 구동에 필요한 파이썬 패키지를 설치합니다.
+```
 uv pip install -r requirements.txt
 ```
 
