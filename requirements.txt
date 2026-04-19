@@ -19,3 +19,4 @@ torch
 tiktoken
 sentence-transformers
 xlrd
+numpy==1.26.4

@@ -19,7 +19,7 @@ Chainlit을 기반으로 하여, 사용자의 질문에 대해 **생성형 AI의
 ## 주요 특징 (Key Features)
 
 * **LLM과 기존의 질문-답변 데이터셋을 조합한 시스템**:
-    * **LLM**: Google Gemini / Ollama가 문맥을 파악하여 친절하게 설명합니다.
+    * **LLM**: Google Gemma나 Gemini, Ollama로 구동되는 로컬 LLM이 문맥을 파악하여 친절하게 설명합니다.
     * **기존의 유사 질문-답변 제안**: 벡터 DB에서 질문과 가장 유사한 기존 Q&A(학생들의 질의응답, 학교 정보 등)를 검색하여 원본 데이터를 함께 보여줍니다. 이를 통해 AI 환각(Hallucination)을 교차 검증할 수 있습니다.
 * **유연한 LLM 선택**: LLM으로 클라우드(Google Gemini) API와 로컬(Ollama) 모델을 선택할 수 있습니다.
 * **멀티모달 지원**: 텍스트뿐만 아니라 이미지, PDF를 업로드하여 내용을 분석하고 질문할 수 있습니다.
@@ -29,7 +29,7 @@ Chainlit을 기반으로 하여, 사용자의 질문에 대해 **생성형 AI의
 ## 기술 스택
 
 * **프론트엔드**: [Chainlit](https://docs.chainlit.io)
-* **LLM**: Google Gemini (Cloud), Ollama (Local)
+* **LLM**: Google Gemini나 Gemma (Cloud), Ollama로 구동되는 로컬 LLM (Local)
 * **RAG/벡터 저장소**: FAISS (CPU based), LangChain
 * **데이터베이스**: MariaDB (사용 기록 및 사용자 평가 저장)
 * **자연어처리**: Kiwi (한국어 형태소 분석), HuggingFace Embeddings
