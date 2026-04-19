@@ -58,20 +58,24 @@ uv init --python 3.13
 uv venv
 ```
 
-* 이제 가상환경에 진입합니다.
-윈도우라면:
-```
-./.venv/Scripts/activate
-```
-리눅스나 MacOS라면
-```
-source ./.venv/bin/activate
-```
+* 이제 가상환경에 진입합니다. 
+
+윈도우라면: ```./.venv/Scripts/activate```
+
+리눅스나 MacOS라면: ```source ./.venv/bin/activate```
 
 * 이제 챗봇 구동에 필요한 파이썬 패키지를 설치합니다.
 ```
 uv pip install -r requirements.txt
 ```
+
+* 이미지 처리를 위한 파이썬 패키지를 설치합니다.
+
+윈도우라면: ```pip install python-magic-bin```
+
+리눅스라면: ```apt install libmagic``` (우분투/데비안 기준)
+
+MacOS라면: ```brew install libmagic``` (homebrew 설치 필요)
 
 ### 3. 환경 변수 설정 (.env)
 프로젝트 루트에 .env 파일을 생성하세요.
