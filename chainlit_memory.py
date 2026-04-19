@@ -709,27 +709,28 @@ async def main(message: cl.Message):
         cursorclass=pymysql.cursors.DictCursor
     )
 
-    try:
-        with connection.cursor() as cursor:
-            sql = """INSERT INTO datalog_gen_3
-                     (user_name, session_id, student_question, answer, accuracy, satisfaction, image_path, pdf_path, \
-                      selected_similarity)
-                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-
-            cursor.execute(sql, (
-                user_name,
-                session_id,
-                message.content,
-                collected_output,
-                accuracy,
-                satisfaction,
-                image_path_in_db if image_path_in_db else None,
-                pdf_path_in_db if pdf_path_in_db else None,
-                None
-            ))
-        connection.commit()
-    finally:
-        connection.close()
+    # DB가 필요하다면 MariaDB 설정 후, 주석을 해제합니다. https://github.com/kungmo/science_qna_rag_irqa_chatbot 참고.
+    # try:
+    #     with connection.cursor() as cursor:
+    #         sql = """INSERT INTO datalog_gen_3
+    #                  (user_name, session_id, student_question, answer, accuracy, satisfaction, image_path, pdf_path, \
+    #                   selected_similarity)
+    #                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    #
+    #         cursor.execute(sql, (
+    #             user_name,
+    #             session_id,
+    #             message.content,
+    #             collected_output,
+    #             accuracy,
+    #             satisfaction,
+    #             image_path_in_db if image_path_in_db else None,
+    #             pdf_path_in_db if pdf_path_in_db else None,
+    #             None
+    #         ))
+    #     connection.commit()
+    # finally:
+    #     connection.close()
 
     # 평가 버튼 표시
     actions = [
@@ -823,28 +824,29 @@ async def on_similar_question(action: cl.Action):
     user_name = cl.user_session.get("user_name", "미등록")
     session_id = cl.user_session.get("id")
 
-    connection = None
-    try:
-        connection = pymysql.connect(
-            host=os.getenv('DB_HOST'),
-            user=os.getenv('DB_USER'),
-            password=os.getenv('DB_PASSWORD'),
-            db=os.getenv('DB_NAME'),
-            charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        with connection.cursor() as cursor:
-            sql = """INSERT INTO datalog_gen_3
-                     (user_name, session_id, student_question, answer, accuracy, satisfaction, selected_similarity)
-                     VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-            cursor.execute(sql, (user_name, session_id, question, answer, 0, 0, float(similarity)))
-        connection.commit()
-    except Exception as e:
-        print(f"DB Error on similar question logging: {e}")
-        await cl.Message(content=f"DB 관련 오류가 발생했습니다: {e}", author="science_chatbot").send()
-    finally:
-        if connection:
-            connection.close()
+    # DB가 필요하다면 MariaDB 설정 후, 주석을 해제합니다. https://github.com/kungmo/science_qna_rag_irqa_chatbot 참고.
+    # connection = None
+    # try:
+    #     connection = pymysql.connect(
+    #         host=os.getenv('DB_HOST'),
+    #         user=os.getenv('DB_USER'),
+    #         password=os.getenv('DB_PASSWORD'),
+    #         db=os.getenv('DB_NAME'),
+    #         charset='utf8mb4',
+    #         cursorclass=pymysql.cursors.DictCursor
+    #     )
+    #     with connection.cursor() as cursor:
+    #         sql = """INSERT INTO datalog_gen_3
+    #                  (user_name, session_id, student_question, answer, accuracy, satisfaction, selected_similarity)
+    #                  VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    #         cursor.execute(sql, (user_name, session_id, question, answer, 0, 0, float(similarity)))
+    #     connection.commit()
+    # except Exception as e:
+    #     print(f"DB Error on similar question logging: {e}")
+    #     await cl.Message(content=f"DB 관련 오류가 발생했습니다: {e}", author="science_chatbot").send()
+    # finally:
+    #     if connection:
+    #         connection.close()
 
 
 @cl.action_callback("correct_btn")
@@ -852,21 +854,23 @@ async def on_correct(action):
     accuracy = 2
     session_id = cl.user_session.get("id")
     connection = None
-    try:
-        connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
-                                     password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
-                                     charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
-            result = cursor.fetchone()
-            if result and result['max_time']:
-                max_time = result['max_time']
-                sql = "UPDATE datalogSET accuracy = %s WHERE session_id = %s AND input_time = %s"
-                cursor.execute(sql, (accuracy, session_id, max_time))
-        connection.commit()
-    finally:
-        if connection:
-            connection.close()
+
+    # DB가 필요하다면 MariaDB 설정 후, 주석을 해제합니다. https://github.com/kungmo/science_qna_rag_irqa_chatbot 참고.
+    # try:
+    #     connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
+    #                                  password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
+    #                                  charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    #     with connection.cursor() as cursor:
+    #         cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
+    #         result = cursor.fetchone()
+    #         if result and result['max_time']:
+    #             max_time = result['max_time']
+    #             sql = "UPDATE datalogSET accuracy = %s WHERE session_id = %s AND input_time = %s"
+    #             cursor.execute(sql, (accuracy, session_id, max_time))
+    #     connection.commit()
+    # finally:
+    #     if connection:
+    #         connection.close()
     await cl.Message(content="답변이 정확했다고 등록했습니다.", author="science_chatbot").send()
 
 
@@ -875,21 +879,23 @@ async def on_wrong(action):
     accuracy = 1
     session_id = cl.user_session.get("id")
     connection = None
-    try:
-        connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
-                                     password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
-                                     charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
-            result = cursor.fetchone()
-            if result and result['max_time']:
-                max_time = result['max_time']
-                sql = "UPDATE datalogSET accuracy = %s WHERE session_id = %s AND input_time = %s"
-                cursor.execute(sql, (accuracy, session_id, max_time))
-        connection.commit()
-    finally:
-        if connection:
-            connection.close()
+
+    # DB가 필요하다면 MariaDB 설정 후, 주석을 해제합니다. https://github.com/kungmo/science_qna_rag_irqa_chatbot 참고.
+    # try:
+    #     connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
+    #                                  password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
+    #                                  charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    #     with connection.cursor() as cursor:
+    #         cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
+    #         result = cursor.fetchone()
+    #         if result and result['max_time']:
+    #             max_time = result['max_time']
+    #             sql = "UPDATE datalogSET accuracy = %s WHERE session_id = %s AND input_time = %s"
+    #             cursor.execute(sql, (accuracy, session_id, max_time))
+    #     connection.commit()
+    # finally:
+    #     if connection:
+    #         connection.close()
     await cl.Message(content="답변이 틀렸다고 등록했습니다.", author="science_chatbot").send()
 
 
@@ -898,21 +904,23 @@ async def on_accurate(action):
     satisfaction = 2
     session_id = cl.user_session.get("id")
     connection = None
-    try:
-        connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
-                                     password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
-                                     charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
-            result = cursor.fetchone()
-            if result and result['max_time']:
-                max_time = result['max_time']
-                sql = "UPDATE datalogSET satisfaction = %s WHERE session_id = %s AND input_time = %s"
-                cursor.execute(sql, (satisfaction, session_id, max_time))
-        connection.commit()
-    finally:
-        if connection:
-            connection.close()
+
+    # DB가 필요하다면 MariaDB 설정 후, 주석을 해제합니다. https://github.com/kungmo/science_qna_rag_irqa_chatbot 참고.
+    # try:
+    #     connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
+    #                                  password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
+    #                                  charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    #     with connection.cursor() as cursor:
+    #         cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
+    #         result = cursor.fetchone()
+    #         if result and result['max_time']:
+    #             max_time = result['max_time']
+    #             sql = "UPDATE datalogSET satisfaction = %s WHERE session_id = %s AND input_time = %s"
+    #             cursor.execute(sql, (satisfaction, session_id, max_time))
+    #     connection.commit()
+    # finally:
+    #     if connection:
+    #         connection.close()
     await cl.Message(content="답변의 설명 수준이 적당했다고 등록했습니다.", author="science_chatbot").send()
 
 
@@ -921,21 +929,23 @@ async def on_not_accurate(action):
     satisfaction = 1
     session_id = cl.user_session.get("id")
     connection = None
-    try:
-        connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
-                                     password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
-                                     charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
-            result = cursor.fetchone()
-            if result and result['max_time']:
-                max_time = result['max_time']
-                sql = "UPDATE datalogSET satisfaction = %s WHERE session_id = %s AND input_time = %s"
-                cursor.execute(sql, (satisfaction, session_id, max_time))
-        connection.commit()
-    finally:
-        if connection:
-            connection.close()
+
+    # DB가 필요하다면 MariaDB 설정 후, 주석을 해제합니다. https://github.com/kungmo/science_qna_rag_irqa_chatbot 참고.
+    # try:
+    #     connection = pymysql.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'),
+    #                                  password=os.getenv('DB_PASSWORD'), db=os.getenv('DB_NAME'),
+    #                                  charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    #     with connection.cursor() as cursor:
+    #         cursor.execute("SELECT MAX(input_time) as max_time FROM datalogWHERE session_id = %s", (session_id,))
+    #         result = cursor.fetchone()
+    #         if result and result['max_time']:
+    #             max_time = result['max_time']
+    #             sql = "UPDATE datalogSET satisfaction = %s WHERE session_id = %s AND input_time = %s"
+    #             cursor.execute(sql, (satisfaction, session_id, max_time))
+    #     connection.commit()
+    # finally:
+    #     if connection:
+    #         connection.close()
     await cl.Message(content="답변의 설명 수준이 너무 쉽거나 어렵다고 등록했습니다.", author="science_chatbot").send()
 
 
