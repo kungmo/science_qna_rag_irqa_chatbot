@@ -206,6 +206,7 @@ for pdf_path in pdf_paths:
 docs_PDF = PDF_sentences
 
 output_filename = os.path.join(BASE_DIR, "docs_PDF", "docs_PDF.pkl")
+os.makedirs(os.path.dirname(output_filename), exist_ok=True)
 
 with open(output_filename, 'wb') as f:
     pickle.dump(docs_PDF, f)
